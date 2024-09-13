@@ -2,7 +2,6 @@ import { Task } from 'modules/tasks/entities/task.entity';
 import { user } from 'modules/users/entities/user.entity';
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToOne } from 'typeorm';
 
-// Define the enum for project status
 export enum ProjectStatus {
   ACTIVE = 'ACTIVE',
   INACTIVE = 'INACTIVE',

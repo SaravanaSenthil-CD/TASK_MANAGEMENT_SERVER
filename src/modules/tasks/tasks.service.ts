@@ -74,4 +74,23 @@ export class TasksService {
       async removeTask(id:string): Promise<void> {
         await this.taskRepository.delete(id);
       }
+
+      async findTasksByProjectId(projectId: string): Promise<Task[]> {
+        try {
+          const project = await this.projectRepository.findOne({ where: { id: projectId } });
+      
+          if (!project) {
+            throw new NotFoundException(`Project with ID ${projectId} not found`);
+          }
+          
+          const tasks = await this.taskRepository.find({ where: { project: project } });
+    
+      
+          return tasks;
+        } catch (error) {
+          console.error('Error fetching tasks for project:', error);
+          throw new InternalServerErrorException('Error fetching tasks for the project');
+        }
+      }
+      
 }

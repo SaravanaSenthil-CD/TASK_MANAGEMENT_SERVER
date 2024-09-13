@@ -1,7 +1,8 @@
-import { Body, Controller, Delete, Get, InternalServerErrorException, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, InternalServerErrorException, NotFoundException, Param, Post, Put } from '@nestjs/common';
 import { TasksService } from './tasks.service';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
+import { Task } from './entities/task.entity';
 
 @Controller('tasks')
 export class TasksController {
@@ -21,7 +22,7 @@ export class TasksController {
         }
     }
 
-    @Get()
+    @Get('alltask')
     async findAllTask(){
         try{
           const task = await this.taskservice.findAllTask();
@@ -39,12 +40,12 @@ export class TasksController {
       return this.taskservice.findOneTask(id);
     }
 
-  @Put(':id')
+  @Put('/update/:id')
   updateTask(@Param('id') id: string, @Body() updateTaskDto: UpdateTaskDto) {
     return this.taskservice.updateTask(id, updateTaskDto);
   }
 
-     @Delete(':id')
+     @Delete('/delete/:id')
      removeTask(@Param('id') id: string) {
      const task= this.taskservice.removeTask(id);
      return{
@@ -52,5 +53,20 @@ export class TasksController {
       data:task
      }
     }
+
+    @Get('project/:projectId')
+    async findTasksByProjectId(@Param('projectId') projectId: string) {
+      try {
+        const tasks = await this.taskservice.findTasksByProjectId(projectId);
+        return {
+          message: 'Tasks for the project fetched successfully',
+          data: tasks
+        };
+      } catch (error) {
+        throw new InternalServerErrorException('Error Fetching Tasks for the Project');
+      }
+    }
+    
+    
 
 }

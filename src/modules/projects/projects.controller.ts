@@ -21,7 +21,7 @@ export class ProjectsController {
     }
   }
 
-  @Get()
+  @Get('allproject')
   async findAll() {
     try {
       const projects= await this.projectsService.findAll();
