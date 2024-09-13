@@ -1,5 +1,8 @@
 import { TypeOrmModuleOptions } from "@nestjs/typeorm";
 import { ConfigService } from '@nestjs/config';
+import { user } from '../modules/users/entities/user.entity';
+import { Project } from "../modules/projects/entities/project.entity";
+import { Task } from "modules/tasks/entities/task.entity";
 
 export const DatabaseConfig = (configService: ConfigService): TypeOrmModuleOptions => ({
     type:'postgres',
@@ -8,6 +11,6 @@ export const DatabaseConfig = (configService: ConfigService): TypeOrmModuleOptio
     username: configService.get<string>('DATABASE_USERNAME'),
     password: configService.get<string>('DATABASE_PASSWORD'),
     database: configService.get<string>('DATABASE_NAME'),
-    entities:[],
+    entities:[user,Project,Task],
     synchronize:true
 })
